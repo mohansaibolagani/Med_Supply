@@ -1,0 +1,40 @@
+services:
+  # ============================================================================
+  # MedSupply Backend REST API Service
+  # ============================================================================
+  - type: web
+    name: medsupply-api
+    runtime: node
+    plan: free
+    region: oregon
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CLIENT_URL
+        value: https://medsupply-web.onrender.com
+      - key: MONGODB_URI
+        sync: false
+
+  # ============================================================================
+  # MedSupply Frontend React UI (Single Page Application)
+  # ============================================================================
+  - type: web
+    name: medsupply-web
+    runtime: static
+    plan: free
+    region: oregon
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://medsupply-api.onrender.com/api
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

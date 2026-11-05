@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
+const path = require('path');
+const fs = require('fs');
 const config = require('./config/config');
 const { connectDB, getDBStatus } = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
@@ -71,6 +73,18 @@ app.use('/api/equipment', equipmentRoutes);
 app.use('/api/emergency', emergencyRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/notifications', notificationRoutes);
+
+// Serve static frontend in production if built
+const frontendDistPath = path.join(__dirname, '../frontend/dist');
+if (fs.existsSync(frontendDistPath)) {
+  app.use(express.static(frontendDistPath));
+  app.get('*', (req, res, next) => {
+    if (req.originalUrl.startsWith('/api')) {
+      return next();
+    }
+    res.sendFile(path.join(frontendDistPath, 'index.html'));
+  });
+}
 
 // 404 Handler for unmatched routes
 app.use('*', (req, res) => {

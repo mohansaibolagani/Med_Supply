@@ -109,6 +109,16 @@ docker-compose up --build
 
 ---
 
+### Option C: 1-Click Deploy on Render (Free Cloud Hosting)
+
+MedSupply is pre-configured with a production Render Blueprint (`render.yaml`).
+1. Go to [Render Blueprints](https://dashboard.render.com/blueprints).
+2. Connect `mohansaibolagani/Med_Supply` and click **"Apply"**.
+3. Both the Express backend Web Service and Vite React Static Site will build and deploy automatically!
+4. See [`RENDER_DEPLOYMENT_GUIDE.md`](RENDER_DEPLOYMENT_GUIDE.md) for full step-by-step instructions.
+
+---
+
 ## 🔑 Fast Demo Accounts (1-Click Switcher Available in UI)
 
 MedSupply includes pre-configured roles in the top navbar for immediate demonstration:

@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "MedSupply - Local Blood & Urgent Medical Equipment Exchange",
   "scripts": {
+    "start": "node backend/server.js",
+    "build": "npm --prefix frontend install && npm --prefix frontend run build && npm --prefix backend install",
     "dev:backend": "cd backend && node server.js",
     "dev:frontend": "cd frontend && node ./node_modules/vite/bin/vite.js",
     "seed": "cd backend && node seed/seedData.js",
