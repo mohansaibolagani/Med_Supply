@@ -1,0 +1,14 @@
+{
+  "name": "medsupply-workspace",
+  "version": "1.0.0",
+  "description": "MedSupply - Local Blood & Urgent Medical Equipment Exchange",
+  "scripts": {
+    "dev:backend": "cd backend && node server.js",
+    "dev:frontend": "cd frontend && node ./node_modules/vite/bin/vite.js",
+    "seed": "cd backend && node seed/seedData.js",
+    "build:frontend": "cd frontend && node ./node_modules/vite/bin/vite.js build"
+  },
+  "keywords": ["medsupply", "blood-donation", "medical-equipment", "emergency-response"],
+  "author": "MedSupply Team",
+  "license": "MIT"
+}

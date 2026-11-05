@@ -1,0 +1,134 @@
+{
+  "info": {
+    "name": "MedSupply API Collection",
+    "description": "Comprehensive Postman test collection for MedSupply Local Blood & Urgent Medical Equipment Exchange",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"donor@medsupply.org\",\n  \"password\": \"demo123\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/auth/login", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "auth", "login"] }
+          }
+        },
+        {
+          "name": "Get Current Profile (Me)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{jwt_token}}" }],
+            "url": { "raw": "http://localhost:5000/api/auth/me", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "auth", "me"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Emergency Feed",
+      "item": [
+        {
+          "name": "Get Live Emergency Feed",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:5000/api/emergency?status=ACTIVE", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "emergency"], "query": [{ "key": "status", "value": "ACTIVE" }] }
+          }
+        },
+        {
+          "name": "Post Emergency SOS Request",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requestType\": \"blood\",\n  \"patientName\": \"Lakshmi Narayana (Age 45)\",\n  \"hospitalName\": \"GGH Vijayawada Trauma ICU\",\n  \"doctorInCharge\": \"Dr. Prasad\",\n  \"bloodGroup\": \"O-\",\n  \"unitsRequired\": 2,\n  \"urgencyLevel\": \"CRITICAL\",\n  \"requiredWithinHours\": 2,\n  \"city\": \"Vijayawada\",\n  \"district\": \"NTR District\",\n  \"attendantName\": \"N. Srinivas\",\n  \"attendantPhone\": \"+91 98480 99112\",\n  \"whatsappNumber\": \"919848099112\",\n  \"medicalSummary\": \"Emergency trauma replacement required within 2 hours.\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/emergency", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "emergency"] }
+          }
+        },
+        {
+          "name": "Get WhatsApp Action Link",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:5000/api/emergency/em1/whatsapp-action", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "emergency", "em1", "whatsapp-action"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Blood Donors",
+      "item": [
+        {
+          "name": "Get All Donors (Filtered by Blood Group & City)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:5000/api/donors?bloodGroup=O-&city=Vijayawada", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "donors"], "query": [{ "key": "bloodGroup", "value": "O-" }, { "key": "city", "value": "Vijayawada" }] }
+          }
+        },
+        {
+          "name": "Toggle Donor Availability",
+          "request": {
+            "method": "PATCH",
+            "url": { "raw": "http://localhost:5000/api/donors/d1/toggle-availability", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "donors", "d1", "toggle-availability"] }
+          }
+        },
+        {
+          "name": "Check 90-Day Cooldown Eligibility",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:5000/api/donors/d1/eligibility", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "donors", "d1", "eligibility"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Medical Equipment",
+      "item": [
+        {
+          "name": "Get All Medical Equipment",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:5000/api/equipment?category=oxygen_concentrator", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "equipment"], "query": [{ "key": "category", "value": "oxygen_concentrator" }] }
+          }
+        },
+        {
+          "name": "Update Equipment Status (Reserve / Available)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"reserved\",\n  \"reservedBy\": \"Ramesh Hospital ICU Dept\",\n  \"expectedReturnDate\": \"2026-11-15T00:00:00.000Z\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/equipment/eq1/status", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "equipment", "eq1", "status"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard & Ops",
+      "item": [
+        {
+          "name": "Get Dashboard Data",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:5000/api/dashboard", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "dashboard"] }
+          }
+        },
+        {
+          "name": "Get Ops Health & Member Split Status",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "http://localhost:5000/api/notifications/ops-health", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "notifications", "ops-health"] }
+          }
+        }
+      ]
+    }
+  ]
+}
