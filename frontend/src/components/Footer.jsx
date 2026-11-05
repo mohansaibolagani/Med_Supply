@@ -66,31 +66,26 @@ export const Footer = ({ setActiveTab }) => {
                   📊 Personal Dashboard & Return Tracker
                 </button>
               </li>
-              <li>
-                <button onClick={() => setActiveTab('workload')} className="hover:text-amber-400 transition-colors font-semibold">
-                  🏆 3-Member Workload Split (Evaluation)
-                </button>
-              </li>
             </ul>
           </div>
 
-          {/* Col 4: University / Academic Project Disclaimer */}
+          {/* Col 4: Trust & Community Safety */}
           <div className="space-y-3">
-            <h4 className="text-xs font-bold text-amber-400 uppercase tracking-wider">Class Training Deliverable</h4>
-            <div className="p-3 rounded-lg bg-amber-950/30 border border-amber-800/40 text-amber-200 text-xs space-y-2">
-              <div className="flex items-center gap-1.5 font-bold">
-                <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
-                <span>Capstone Specification</span>
+            <h4 className="text-xs font-bold text-white uppercase tracking-wider">Community Trust & Safety</h4>
+            <div className="p-3 rounded-lg bg-slate-800/80 border border-slate-700/60 text-slate-300 text-xs space-y-2">
+              <div className="flex items-center gap-1.5 font-bold text-emerald-400">
+                <Shield className="w-3.5 h-3.5" />
+                <span>Verified Health Network</span>
               </div>
-              <p className="text-[11px] leading-relaxed text-amber-300/80">
-                Architected following the 3-Member Workload Split: Express/MongoDB backend, React responsive interface, and WhatsApp/Docker ops deployment.
+              <p className="text-[11px] leading-relaxed text-slate-400">
+                MedSupply connects genuine donors and verified home-care medical equipment owners with hospital referrals and transparent rental terms.
               </p>
             </div>
           </div>
         </div>
 
         <div className="pt-6 border-t border-slate-800 text-center text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p>© 2026 MedSupply Exchange Platform. University Capstone & Training Project.</p>
+          <p>© 2026 MedSupply Exchange Platform. All rights reserved. Emergency Relief Network.</p>
           <div className="flex items-center gap-2">
             <span>Built with precision for healthcare emergency relief</span>
             <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500" />

@@ -97,7 +97,7 @@ Thank you for your life-saving service!`;
             </div>
             <div>
               <h2 className="text-lg font-extrabold">{title}</h2>
-              <p className="text-xs text-emerald-100">Member 3 WhatsApp API Integration & Action Hook</p>
+              <p className="text-xs text-emerald-100">Instant Verified Healthcare Response Channel</p>
             </div>
           </div>
           <button onClick={onClose} className="p-2 rounded-xl text-white/80 hover:text-white hover:bg-white/10">

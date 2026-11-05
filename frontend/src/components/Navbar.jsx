@@ -29,8 +29,7 @@ export const Navbar = ({ activeTab, setActiveTab, onOpenEmergencyModal }) => {
     { id: 'emergency', label: 'Emergency Feed', icon: Flame, isUrgent: true },
     { id: 'donors', label: 'Blood Donors', icon: Droplet },
     { id: 'equipment', label: 'Urgent Equipment', icon: Stethoscope },
-    { id: 'dashboard', label: 'Dashboard & Returns', icon: LayoutDashboard },
-    { id: 'workload', label: 'Team Workload Split', icon: Award }
+    { id: 'dashboard', label: 'Dashboard & Returns', icon: LayoutDashboard }
   ];
 
   return (

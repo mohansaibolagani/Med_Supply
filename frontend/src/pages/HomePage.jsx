@@ -208,35 +208,35 @@ export const HomePage = ({ setActiveTab, onOpenEmergencyModal, onOpenDonorModal,
           </p>
           <div className="pt-2">
             <button
-              onClick={() => setActiveTab('workload')}
+              onClick={() => setActiveTab('emergency')}
               className="text-xs font-bold text-emerald-700 hover:text-emerald-800 flex items-center gap-1"
             >
-              <span>View Technical Architecture</span>
+              <span>View Live Emergency SOS</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
       </section>
 
-      {/* University Banner */}
-      <section className="rounded-3xl bg-slate-100 border border-slate-200 p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+      {/* Emergency Action Banner */}
+      <section className="rounded-3xl bg-gradient-to-r from-red-600 to-rose-700 text-white p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl shadow-red-600/20">
         <div>
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1">
-            Academic Capstone & Class Training Deliverable
+          <span className="text-xs font-bold uppercase tracking-wider text-rose-200 block mb-1">
+            24/7 Citizen Emergency Support
           </span>
-          <h3 className="text-xl font-black text-slate-900">
-            Built as a collaborative 3-Member Engineering Project
+          <h3 className="text-xl sm:text-2xl font-black">
+            Need urgent blood transfusion or emergency home oxygen?
           </h3>
-          <p className="text-xs text-slate-600 mt-1 max-w-xl">
-            Fully implemented with Express REST routes, MongoDB geospatial indexing, React Tailwind interface, and WhatsApp/SMS simulation engine.
+          <p className="text-xs sm:text-sm text-rose-100 mt-1 max-w-xl">
+            Our volunteer network dispatches verified broadcasts to nearby registered donors and home healthcare equipment owners immediately.
           </p>
         </div>
         <button
-          onClick={() => setActiveTab('workload')}
-          className="px-5 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shrink-0 shadow-md flex items-center gap-2"
+          onClick={onOpenEmergencyModal}
+          className="px-6 py-3.5 rounded-2xl bg-white text-red-700 hover:bg-rose-50 font-black text-xs sm:text-sm shrink-0 shadow-lg flex items-center gap-2 transition-all hover:scale-105"
         >
-          <span>View Member Workload Split & Viva Guide</span>
-          <ArrowRight className="w-4 h-4" />
+          <Flame className="w-4 h-4 text-red-600 animate-bounce" />
+          <span>Post Immediate Request</span>
         </button>
       </section>
     </div>

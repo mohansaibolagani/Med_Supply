@@ -6,7 +6,6 @@ import { EmergencyFeedPage } from './pages/EmergencyFeedPage';
 import { DonorsPage } from './pages/DonorsPage';
 import { EquipmentPage } from './pages/EquipmentPage';
 import { DashboardPage } from './pages/DashboardPage';
-import { TeamWorkloadPage } from './pages/TeamWorkloadPage';
 import { EmergencyRequestModal } from './components/EmergencyRequestModal';
 import { DonorRegisterModal } from './components/DonorRegisterModal';
 import { AddEquipmentModal } from './components/AddEquipmentModal';
@@ -97,8 +96,6 @@ export function App() {
         );
       case 'dashboard':
         return <DashboardPage />;
-      case 'workload':
-        return <TeamWorkloadPage />;
       default:
         return (
           <HomePage
