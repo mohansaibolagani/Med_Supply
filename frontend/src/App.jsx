@@ -12,9 +12,11 @@ import { EmergencyRequestModal } from './components/EmergencyRequestModal';
 import { DonorRegisterModal } from './components/DonorRegisterModal';
 import { AddEquipmentModal } from './components/AddEquipmentModal';
 import { WhatsAppModal } from './components/WhatsAppModal';
+import { IntroVideoOverlay } from './components/IntroVideoOverlay';
 import { api } from './services/api';
 
 export function App() {
+  const [showIntroVideo, setShowIntroVideo] = useState(true);
   const [activeTab, setActiveTab] = useState('home');
   const [emergencyModalOpen, setEmergencyModalOpen] = useState(false);
   const [donorModalOpen, setDonorModalOpen] = useState(false);
@@ -140,11 +142,17 @@ export function App() {
         </div>
       )}
 
+      {/* Fullscreen Entry Intro Video with Audio */}
+      {showIntroVideo && (
+        <IntroVideoOverlay onComplete={() => setShowIntroVideo(false)} />
+      )}
+
       {/* Navigation */}
       <Navbar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         onOpenEmergencyModal={() => setEmergencyModalOpen(true)}
+        onReplayIntro={() => setShowIntroVideo(true)}
       />
 
       {/* Main Container */}
@@ -155,13 +163,15 @@ export function App() {
       {/* Footer */}
       <Footer setActiveTab={setActiveTab} />
 
-      {/* Role Selection Welcome Modal (Asks every time they open the app!) */}
-      <RoleSelectModal
-        onSelectRole={(role, defaultTab) => {
-          showToast(`👋 Browsing as ${role === 'donor' ? 'Blood Donor' : role === 'provider' ? 'Equipment Provider' : 'Patient / Attendant'}`);
-          if (defaultTab) setActiveTab(defaultTab);
-        }}
-      />
+      {/* Role Selection Welcome Modal (Asks after video is viewed or skipped) */}
+      {!showIntroVideo && (
+        <RoleSelectModal
+          onSelectRole={(role, defaultTab) => {
+            showToast(`👋 Browsing as ${role === 'donor' ? 'Blood Donor' : role === 'provider' ? 'Equipment Provider' : 'Patient / Attendant'}`);
+            if (defaultTab) setActiveTab(defaultTab);
+          }}
+        />
+      )}
 
       {/* Modals */}
       <EmergencyRequestModal

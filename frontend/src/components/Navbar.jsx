@@ -16,12 +16,13 @@ import {
   LogOut, 
   ChevronDown,
   User,
-  Sparkles
+  Sparkles,
+  Play
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useLocation } from '../context/LocationContext';
 
-export const Navbar = ({ activeTab, setActiveTab, onOpenEmergencyModal }) => {
+export const Navbar = ({ activeTab, setActiveTab, onOpenEmergencyModal, onReplayIntro }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const { user, logout, activePersona, setShowRoleModal } = useAuth();
@@ -133,6 +134,18 @@ export const Navbar = ({ activeTab, setActiveTab, onOpenEmergencyModal }) => {
 
           {/* Right Action Controls */}
           <div className="hidden sm:flex items-center gap-2.5">
+            {/* Replay Intro Video Button */}
+            {onReplayIntro && (
+              <button
+                onClick={onReplayIntro}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 hover:border-red-300 hover:bg-rose-50 text-slate-700 text-xs font-bold transition-all shadow-sm"
+                title="Play intro video"
+              >
+                <Play className="w-3.5 h-3.5 text-red-600 fill-red-600" />
+                <span>Intro</span>
+              </button>
+            )}
+
             {/* Persona Switcher Pill */}
             <button
               onClick={() => setShowRoleModal(true)}
