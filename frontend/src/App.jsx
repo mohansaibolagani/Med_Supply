@@ -6,6 +6,8 @@ import { EmergencyFeedPage } from './pages/EmergencyFeedPage';
 import { DonorsPage } from './pages/DonorsPage';
 import { EquipmentPage } from './pages/EquipmentPage';
 import { DashboardPage } from './pages/DashboardPage';
+import { AuthPage } from './pages/AuthPage';
+import { RoleSelectModal } from './components/RoleSelectModal';
 import { EmergencyRequestModal } from './components/EmergencyRequestModal';
 import { DonorRegisterModal } from './components/DonorRegisterModal';
 import { AddEquipmentModal } from './components/AddEquipmentModal';
@@ -38,7 +40,6 @@ export function App() {
     if (res.success) {
       showToast('🚨 Emergency SOS request broadcasted successfully!');
       if (res.whatsappDirectLink) {
-        // Open WhatsApp modal with target data
         handleOpenWhatsAppModal(res.data, 'emergency');
       }
     }
@@ -96,6 +97,26 @@ export function App() {
         );
       case 'dashboard':
         return <DashboardPage />;
+      case 'auth_login':
+        return (
+          <AuthPage
+            initialMode="login"
+            onAuthSuccess={() => {
+              showToast('✅ Signed in successfully!');
+              setActiveTab('home');
+            }}
+          />
+        );
+      case 'auth_signup':
+        return (
+          <AuthPage
+            initialMode="signup"
+            onAuthSuccess={() => {
+              showToast('🎉 Account created & signed in!');
+              setActiveTab('home');
+            }}
+          />
+        );
       default:
         return (
           <HomePage
@@ -133,6 +154,14 @@ export function App() {
 
       {/* Footer */}
       <Footer setActiveTab={setActiveTab} />
+
+      {/* Role Selection Welcome Modal (Asks every time they open the app!) */}
+      <RoleSelectModal
+        onSelectRole={(role, defaultTab) => {
+          showToast(`👋 Browsing as ${role === 'donor' ? 'Blood Donor' : role === 'provider' ? 'Equipment Provider' : 'Patient / Attendant'}`);
+          if (defaultTab) setActiveTab(defaultTab);
+        }}
+      />
 
       {/* Modals */}
       <EmergencyRequestModal

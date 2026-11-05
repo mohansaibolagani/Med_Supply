@@ -1,17 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Droplet, User, Phone, MapPin, Calendar, HeartHandshake } from 'lucide-react';
+import { useLocation } from '../context/LocationContext';
 
 export const DonorRegisterModal = ({ isOpen, onClose, onSubmitSuccess }) => {
+  const { detectedCity, detectedDistrict, coordinates } = useLocation();
   const [fullName, setFullName] = useState('');
   const [bloodGroup, setBloodGroup] = useState('O+');
   const [phone, setPhone] = useState('');
-  const [city, setCity] = useState('Vijayawada');
-  const [district, setDistrict] = useState('NTR District');
+  const [city, setCity] = useState(detectedCity || 'Vijayawada');
+  const [district, setDistrict] = useState(detectedDistrict || 'NTR District');
   const [lastDonationDate, setLastDonationDate] = useState('');
   const [readyForEmergency, setReadyForEmergency] = useState(true);
   const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (detectedCity) setCity(detectedCity);
+    if (detectedDistrict) setDistrict(detectedDistrict);
+  }, [detectedCity, detectedDistrict]);
 
   if (!isOpen) return null;
 
@@ -32,7 +39,8 @@ export const DonorRegisterModal = ({ isOpen, onClose, onSubmitSuccess }) => {
         district,
         lastDonationDate: lastDonationDate || null,
         readyForEmergency,
-        notes
+        notes,
+        coordinates: coordinates ? [coordinates.lng, coordinates.lat] : [80.6480, 16.5062]
       });
       if (res && res.success) {
         onClose();

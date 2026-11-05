@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   X, 
   ShieldAlert, 
@@ -8,12 +8,15 @@ import {
   Building, 
   Phone, 
   MessageSquare, 
-  Clock,
-  Send,
-  CheckCircle2
+  Clock, 
+  Send, 
+  CheckCircle2,
+  Compass
 } from 'lucide-react';
+import { useLocation } from '../context/LocationContext';
 
 export const EmergencyRequestModal = ({ isOpen, onClose, onSubmitSuccess }) => {
+  const { detectedCity, detectedDistrict, coordinates } = useLocation();
   const [requestType, setRequestType] = useState('blood');
   const [bloodGroup, setBloodGroup] = useState('O-');
   const [unitsRequired, setUnitsRequired] = useState(2);
@@ -23,8 +26,13 @@ export const EmergencyRequestModal = ({ isOpen, onClose, onSubmitSuccess }) => {
   const [patientName, setPatientName] = useState('');
   const [hospitalName, setHospitalName] = useState('');
   const [doctorInCharge, setDoctorInCharge] = useState('');
-  const [city, setCity] = useState('Vijayawada');
-  const [district, setDistrict] = useState('NTR District');
+  const [city, setCity] = useState(detectedCity || 'Vijayawada');
+  const [district, setDistrict] = useState(detectedDistrict || 'NTR District');
+
+  useEffect(() => {
+    if (detectedCity) setCity(detectedCity);
+    if (detectedDistrict) setDistrict(detectedDistrict);
+  }, [detectedCity, detectedDistrict]);
   const [attendantName, setAttendantName] = useState('');
   const [attendantPhone, setAttendantPhone] = useState('');
   const [whatsappNumber, setWhatsappNumber] = useState('');
@@ -60,7 +68,8 @@ export const EmergencyRequestModal = ({ isOpen, onClose, onSubmitSuccess }) => {
         attendantName,
         attendantPhone,
         whatsappNumber: whatsappNumber || attendantPhone,
-        medicalSummary
+        medicalSummary,
+        coordinates: coordinates ? [coordinates.lng, coordinates.lat] : [80.6480, 16.5062]
       };
 
       const res = await onSubmitSuccess(payload);

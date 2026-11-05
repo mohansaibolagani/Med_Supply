@@ -1,24 +1,31 @@
 import React, { useState } from 'react';
 import { 
   HeartHandshake, 
-  Activity, 
   Droplet, 
   Stethoscope, 
   LayoutDashboard, 
-  PlusCircle, 
   UserCheck, 
   Menu, 
   X, 
-  ShieldAlert,
-  Flame,
-  Award
+  ShieldAlert, 
+  Flame, 
+  MapPin, 
+  Compass, 
+  LogIn, 
+  UserPlus, 
+  LogOut, 
+  ChevronDown,
+  User,
+  Sparkles
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useLocation } from '../context/LocationContext';
 
 export const Navbar = ({ activeTab, setActiveTab, onOpenEmergencyModal }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [demoDropdownOpen, setDemoDropdownOpen] = useState(false);
-  const { user, logout, loginAsDemo } = useAuth();
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const { user, logout, activePersona, setShowRoleModal } = useAuth();
+  const { detectedCity, detectedDistrict, requestLocation, locationStatus } = useLocation();
 
   const handleNavClick = (tab) => {
     setActiveTab(tab);
@@ -32,10 +39,25 @@ export const Navbar = ({ activeTab, setActiveTab, onOpenEmergencyModal }) => {
     { id: 'dashboard', label: 'Dashboard & Returns', icon: LayoutDashboard }
   ];
 
+  const getPersonaLabel = () => {
+    switch (activePersona) {
+      case 'donor':
+        return { text: 'Blood Donor', color: 'bg-red-50 text-red-700 border-red-200' };
+      case 'provider':
+        return { text: 'Equipment Provider', color: 'bg-teal-50 text-teal-700 border-teal-200' };
+      case 'patient':
+        return { text: 'Emergency Patient', color: 'bg-rose-50 text-rose-700 border-rose-200' };
+      default:
+        return { text: 'Select Role', color: 'bg-slate-100 text-slate-700 border-slate-200' };
+    }
+  };
+
+  const persona = getPersonaLabel();
+
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
       {/* Top emergency announcement bar */}
-      <div className="bg-gradient-to-r from-rose-700 via-red-600 to-rose-700 text-white text-xs py-1.5 px-4 font-medium flex items-center justify-between shadow-inner">
+      <div className="bg-gradient-to-r from-rose-700 via-red-600 to-rose-700 text-white text-xs py-1.5 px-4 font-medium shadow-inner">
         <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="flex h-2 w-2 relative">
@@ -44,16 +66,26 @@ export const Navbar = ({ activeTab, setActiveTab, onOpenEmergencyModal }) => {
             </span>
             <span><strong>Urgent Medical Network:</strong> 108 Emergency Ambulance & Blood Dispatch Integration Active</span>
           </div>
-          <div className="hidden sm:flex items-center gap-4 text-rose-100">
-            <span>Direct WhatsApp SOS Hooks Enabled</span>
-            <span>•</span>
-            <span>NTR & Guntur Districts Corridor</span>
+
+          {/* Location status trigger in top bar */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={requestLocation}
+              className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/15 hover:bg-white/25 text-white text-[11px] font-semibold transition-colors"
+              title="Click to detect current location"
+            >
+              <MapPin className="w-3 h-3 text-rose-200" />
+              <span>{detectedCity ? `${detectedCity}, ${detectedDistrict}` : '📍 Detect My Location'}</span>
+            </button>
+            <span className="hidden sm:inline text-rose-200">•</span>
+            <span className="hidden sm:inline text-rose-100 text-[11px]">NTR & Guntur Districts</span>
           </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
+          
           {/* Brand Logo */}
           <div 
             className="flex items-center gap-2.5 cursor-pointer group"
@@ -72,7 +104,7 @@ export const Navbar = ({ activeTab, setActiveTab, onOpenEmergencyModal }) => {
           </div>
 
           {/* Desktop Nav Links */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden lg:flex items-center gap-1">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
@@ -99,79 +131,101 @@ export const Navbar = ({ activeTab, setActiveTab, onOpenEmergencyModal }) => {
             })}
           </nav>
 
-          {/* Action Buttons */}
-          <div className="hidden sm:flex items-center gap-3">
+          {/* Right Action Controls */}
+          <div className="hidden sm:flex items-center gap-2.5">
+            {/* Persona Switcher Pill */}
+            <button
+              onClick={() => setShowRoleModal(true)}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border transition-all hover:shadow-sm ${persona.color}`}
+              title="Click to change your persona (Donor / Provider / Patient)"
+            >
+              <span>I am: <strong>{persona.text}</strong></span>
+              <span className="text-[10px] underline ml-1 text-slate-400 hover:text-slate-700">Switch</span>
+            </button>
+
             {/* SOS Emergency Button */}
             <button
               onClick={onOpenEmergencyModal}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold text-sm shadow-md shadow-red-600/30 hover:shadow-red-600/50 hover:scale-[1.02] active:scale-[0.98] transition-all"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-md shadow-red-600/30 hover:scale-[1.02] active:scale-[0.98] transition-all"
             >
               <ShieldAlert className="w-4 h-4 animate-bounce" />
-              <span>Post Emergency SOS</span>
+              <span>Post SOS</span>
             </button>
 
-            {/* Quick Demo Switcher / User Profile */}
-            <div className="relative">
-              <button
-                onClick={() => setDemoDropdownOpen(!demoDropdownOpen)}
-                className="flex items-center gap-2 px-3 py-2 rounded-lg border border-slate-300 hover:border-slate-400 text-slate-700 text-xs font-semibold bg-white transition-all shadow-sm"
-              >
-                <UserCheck className="w-4 h-4 text-emerald-600" />
-                <span>{user ? user.name.split(' ')[0] : 'Demo Roles'}</span>
-              </button>
-
-              {demoDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-slate-200 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-                  <div className="px-3 py-1.5 border-b border-slate-100">
-                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Fast Demo Accounts (1-Click)</p>
+            {/* User Auth: Sign In / Profile */}
+            {user ? (
+              <div className="relative">
+                <button
+                  onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 hover:border-slate-300 bg-white text-xs font-bold text-slate-800 transition-colors shadow-sm"
+                >
+                  <div className="w-6 h-6 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-bold text-xs">
+                    {user.name.charAt(0)}
                   </div>
-                  <button
-                    onClick={() => { loginAsDemo('patient@medsupply.org'); setDemoDropdownOpen(false); }}
-                    className="w-full text-left px-3 py-2 text-xs hover:bg-slate-50 flex items-center justify-between"
-                  >
-                    <div>
-                      <p className="font-semibold text-slate-800">Emergency Requester</p>
-                      <p className="text-[10px] text-slate-500">patient@medsupply.org</p>
+                  <span className="max-w-[100px] truncate">{user.name.split(' ')[0]}</span>
+                  <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+                </button>
+
+                {userDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                    <div className="px-4 py-2 border-b border-slate-100">
+                      <p className="font-bold text-xs text-slate-900 truncate">{user.name}</p>
+                      <p className="text-[11px] text-slate-500 truncate">{user.email}</p>
+                      <span className="inline-block mt-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-red-50 text-red-700">
+                        {user.role}
+                      </span>
                     </div>
-                    <span className="text-[10px] bg-red-50 text-red-700 px-1.5 py-0.5 rounded font-bold">Patient</span>
-                  </button>
-                  <button
-                    onClick={() => { loginAsDemo('donor@medsupply.org'); setDemoDropdownOpen(false); }}
-                    className="w-full text-left px-3 py-2 text-xs hover:bg-slate-50 flex items-center justify-between"
-                  >
-                    <div>
-                      <p className="font-semibold text-slate-800">Dr. Suresh Varma (O-)</p>
-                      <p className="text-[10px] text-slate-500">Universal Donor</p>
-                    </div>
-                    <span className="text-[10px] bg-rose-50 text-rose-700 px-1.5 py-0.5 rounded font-bold">Donor</span>
-                  </button>
-                  <button
-                    onClick={() => { loginAsDemo('equipment@medsupply.org'); setDemoDropdownOpen(false); }}
-                    className="w-full text-left px-3 py-2 text-xs hover:bg-slate-50 flex items-center justify-between"
-                  >
-                    <div>
-                      <p className="font-semibold text-slate-800">Vaidya Diagnostic Trust</p>
-                      <p className="text-[10px] text-slate-500">Oxygen & CPAP Center</p>
-                    </div>
-                    <span className="text-[10px] bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded font-bold">Provider</span>
-                  </button>
-                  {user && (
-                    <div className="pt-1 mt-1 border-t border-slate-100">
+
+                    <button
+                      onClick={() => { handleNavClick('dashboard'); setUserDropdownOpen(false); }}
+                      className="w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 font-medium flex items-center gap-2"
+                    >
+                      <LayoutDashboard className="w-4 h-4 text-slate-400" />
+                      <span>My Dashboard & Returns</span>
+                    </button>
+
+                    <button
+                      onClick={() => { setShowRoleModal(true); setUserDropdownOpen(false); }}
+                      className="w-full text-left px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 font-medium flex items-center gap-2"
+                    >
+                      <UserCheck className="w-4 h-4 text-emerald-600" />
+                      <span>Switch Active Persona</span>
+                    </button>
+
+                    <div className="pt-1 border-t border-slate-100">
                       <button
-                        onClick={() => { logout(); setDemoDropdownOpen(false); }}
-                        className="w-full text-left px-3 py-1.5 text-xs text-red-600 hover:bg-red-50 font-semibold"
+                        onClick={() => { logout(); setUserDropdownOpen(false); }}
+                        className="w-full text-left px-4 py-2 text-xs text-red-600 hover:bg-red-50 font-semibold flex items-center gap-2"
                       >
-                        Sign Out ({user.name})
+                        <LogOut className="w-4 h-4" />
+                        <span>Sign Out</span>
                       </button>
                     </div>
-                  )}
-                </div>
-              )}
-            </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => handleNavClick('auth_login')}
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+                >
+                  <LogIn className="w-3.5 h-3.5 text-slate-500" />
+                  <span>Sign In</span>
+                </button>
+                <button
+                  onClick={() => handleNavClick('auth_signup')}
+                  className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 shadow-sm transition-all hover:scale-[1.02]"
+                >
+                  <UserPlus className="w-3.5 h-3.5" />
+                  <span>Register</span>
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Mobile menu toggle */}
-          <div className="flex md:hidden items-center gap-2">
+          <div className="flex lg:hidden items-center gap-2">
             <button
               onClick={onOpenEmergencyModal}
               className="px-3 py-1.5 rounded-lg bg-red-600 text-white font-bold text-xs"
@@ -190,7 +244,18 @@ export const Navbar = ({ activeTab, setActiveTab, onOpenEmergencyModal }) => {
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-4 space-y-2">
+        <div className="lg:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-4 space-y-2">
+          {/* Persona selector in mobile */}
+          <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between text-xs">
+            <span>Role: <strong>{persona.text}</strong></span>
+            <button
+              onClick={() => { setShowRoleModal(true); setMobileMenuOpen(false); }}
+              className="font-bold text-red-600 underline text-[11px]"
+            >
+              Change
+            </button>
+          </div>
+
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -207,19 +272,31 @@ export const Navbar = ({ activeTab, setActiveTab, onOpenEmergencyModal }) => {
               </button>
             );
           })}
-          <div className="pt-2 border-t border-slate-100 flex gap-2">
-            <button
-              onClick={() => { loginAsDemo('donor@medsupply.org'); setMobileMenuOpen(false); }}
-              className="flex-1 py-2 text-xs font-semibold bg-slate-100 text-slate-700 rounded-lg text-center"
-            >
-              Demo: Donor
-            </button>
-            <button
-              onClick={() => { loginAsDemo('equipment@medsupply.org'); setMobileMenuOpen(false); }}
-              className="flex-1 py-2 text-xs font-semibold bg-slate-100 text-slate-700 rounded-lg text-center"
-            >
-              Demo: Provider
-            </button>
+
+          <div className="pt-2 border-t border-slate-100">
+            {user ? (
+              <button
+                onClick={() => { logout(); setMobileMenuOpen(false); }}
+                className="w-full py-2.5 text-center text-xs font-bold text-red-600 bg-red-50 rounded-xl"
+              >
+                Sign Out ({user.name})
+              </button>
+            ) : (
+              <div className="flex gap-2">
+                <button
+                  onClick={() => handleNavClick('auth_login')}
+                  className="flex-1 py-2 text-xs font-bold border border-slate-300 rounded-xl text-center"
+                >
+                  Sign In
+                </button>
+                <button
+                  onClick={() => handleNavClick('auth_signup')}
+                  className="flex-1 py-2 text-xs font-bold bg-slate-900 text-white rounded-xl text-center"
+                >
+                  Register
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}

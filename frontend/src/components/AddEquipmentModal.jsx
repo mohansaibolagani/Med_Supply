@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Stethoscope, Building, Tag, IndianRupee, MapPin, Phone } from 'lucide-react';
+import { useLocation } from '../context/LocationContext';
 
 export const AddEquipmentModal = ({ isOpen, onClose, onSubmitSuccess }) => {
+  const { detectedCity, detectedDistrict, coordinates } = useLocation();
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('oxygen_concentrator');
   const [description, setDescription] = useState('');
@@ -10,8 +12,13 @@ export const AddEquipmentModal = ({ isOpen, onClose, onSubmitSuccess }) => {
   const [securityDeposit, setSecurityDeposit] = useState(2000);
   const [rentalTerms, setRentalTerms] = useState('Govt ID proof required. Subsidized for underprivileged families.');
   const [isFreeEmergency, setIsFreeEmergency] = useState(false);
-  const [city, setCity] = useState('Vijayawada');
-  const [district, setDistrict] = useState('NTR District');
+  const [city, setCity] = useState(detectedCity || 'Vijayawada');
+  const [district, setDistrict] = useState(detectedDistrict || 'NTR District');
+
+  useEffect(() => {
+    if (detectedCity) setCity(detectedCity);
+    if (detectedDistrict) setDistrict(detectedDistrict);
+  }, [detectedCity, detectedDistrict]);
   const [ownerName, setOwnerName] = useState('');
   const [contactPhone, setContactPhone] = useState('');
   const [imageUrl, setImageUrl] = useState('');
@@ -42,7 +49,8 @@ export const AddEquipmentModal = ({ isOpen, onClose, onSubmitSuccess }) => {
         district,
         ownerName: ownerName || 'Community Equipment Bank',
         contactPhone,
-        imageUrl: imageUrl || 'https://images.unsplash.com/photo-1584362917165-526a968579e8?w=800&auto=format&fit=crop&q=80'
+        imageUrl: imageUrl || 'https://images.unsplash.com/photo-1584362917165-526a968579e8?w=800&auto=format&fit=crop&q=80',
+        coordinates: coordinates ? [coordinates.lng, coordinates.lat] : [80.6480, 16.5062]
       });
       if (res && res.success) {
         onClose();
