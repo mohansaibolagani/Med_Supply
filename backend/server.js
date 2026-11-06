@@ -74,12 +74,22 @@ app.use('/api/emergency', emergencyRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/notifications', notificationRoutes);
 
+// Fallback direct routes (supports clients/proxies that call without /api prefix)
+app.use('/auth', authRoutes);
+app.use('/donors', donorRoutes);
+app.use('/equipment', equipmentRoutes);
+app.use('/emergency', emergencyRoutes);
+app.use('/dashboard', dashboardRoutes);
+app.use('/notifications', notificationRoutes);
+
 // Serve static frontend in production if built
 const frontendDistPath = path.join(__dirname, '../frontend/dist');
 if (fs.existsSync(frontendDistPath)) {
   app.use(express.static(frontendDistPath));
   app.get('*', (req, res, next) => {
-    if (req.originalUrl.startsWith('/api')) {
+    const isApiRequest = ['/api', '/auth', '/donors', '/equipment', '/emergency', '/dashboard', '/notifications']
+      .some(prefix => req.originalUrl.startsWith(prefix));
+    if (isApiRequest) {
       return next();
     }
     res.sendFile(path.join(frontendDistPath, 'index.html'));
