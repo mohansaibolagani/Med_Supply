@@ -5,6 +5,7 @@
 [![Geospatial](https://img.shields.io/badge/MongoDB-2dsphere%20Geospatial-green.svg)](https://www.mongodb.com/)
 [![WhatsApp Hook](https://img.shields.io/badge/Integration-WhatsApp%20Deep%20Hooks-25D366.svg)](https://wa.me/)
 [![Academic Capstone](https://img.shields.io/badge/Project-Class%20Training%20Capstone-amber.svg)](#3-member-workload-split)
+[![PowerPoint Presentation](https://img.shields.io/badge/Presentation-10--Slide%20PowerPoint%20Deck-orange.svg)](MedSupply_Project_Presentation.pptx)
 
 > A localized healthcare emergency platform connecting urgent blood donors, diagnostic centers, and patients seeking home-care medical rentals (oxygen concentrators, wheelchairs, CPAP/BiPAP machines) across Vijayawada, Guntur, and neighboring districts.
 
@@ -32,6 +33,27 @@ This project has been architected with a strict, verifiable division of engineer
 | **Member 3** | **Verification & Ops** | • External WhatsApp Web / Mobile deep link action hooks (`wa.me`) with pre-formatted SOS templates<br>• Automated WhatsApp broadcast simulation engine with delivery logs<br>• 25+ record database seed dataset (`backend/seed/seedData.js`)<br>• Zero-dependency resilient In-Memory Mock Store fallback for offline presentation<br>• Multi-stage Docker containerization (`docker-compose.yml`) & Postman Collection |
 
 *See [`docs/MEMBER_WORKLOAD_SPLIT.md`](docs/MEMBER_WORKLOAD_SPLIT.md) for full academic breakdown and viva defense pointers.*
+
+---
+
+## 📊 PowerPoint Presentation (Class Defense & Viva)
+
+The complete 10-slide academic defense presentation is available directly in the repository:
+- 📥 **Download Presentation:** [`MedSupply_Project_Presentation.pptx`](MedSupply_Project_Presentation.pptx) *(or [`docs/MedSupply_Project_Presentation.pptx`](docs/MedSupply_Project_Presentation.pptx))*
+- 📖 **Slide-by-Slide Viva Notes:** [`docs/PRESENTATION_SLIDES.md`](docs/PRESENTATION_SLIDES.md)
+- 🖼️ **Interface Mockups:** [`docs/screenshots/`](docs/screenshots/)
+
+### Slide Deck Structure (10 Slides):
+1. **Title & Team Details:** MERN Architecture & 3-Member Workload Split
+2. **Introduction & Problem Statement:** Real-time emergency gap & post-ICU equipment friction
+3. **Project Objectives:** 5 core life-saving deliverables
+4. **Technologies & Tools Used:** React 18, Vite 6, Tailwind CSS, Node.js 24, Express, MongoDB, Render
+5. **System Architecture & Workflow:** 3-tier diagram & 5-step emergency SOS lifecycle
+6. **Features & Functionalities:** Urgent feeds, 90-day cooldown, equipment rentals, WhatsApp hooks
+7. **Database Design & API Integration:** MongoDB schemas, compound indexes, REST route table
+8. **Screenshots of the Project:** Live UI screen captures across all 4 key workflows
+9. **Challenges Faced & Future Scope:** Route prefix fixes, offline resiliency, IoT & drone roadmap
+10. **Conclusion & Deliverables:** Production impact, live links & viva Q&A
 
 ---
 
